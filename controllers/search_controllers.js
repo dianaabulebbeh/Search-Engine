@@ -15,28 +15,47 @@ exports.search=function(req,res,next){
    console.log("text "+text)
    console.log("is Arabic "+result)
 if(result){
-    ///U+0627=ا U+0623=أ
-   if(q=='ا' || q=='أ'){
-       console.log("arabic char A ///////////// "+q)
-       var reg1=new RegExp("^"+"ا"+".*")
-       var reg2=new RegExp("^"+"أ"+".*")
-      
-        search.find ({"$or":[{Arabic:reg2},{Arabic:reg1}]
+
+    search1= new RegExp("^" + "ا")
+    search2= new RegExp("^" + "أ")
+   console.log("search1 "+search1.test(q))
+   console.log("search2 "+search2.test(q))
+   console.log(q.length==1)
+   
+   if(search1.test(q)|| search2.test(q)){
+    if(q.length==1){
+       console.log("arabic char A ///////////// "+q)         
+        search.find ({"$or":[{Arabic:search1},{Arabic:search2}]
     },{ _id:0,
         __v:0
-    },function(err,data){
-        
+    },function(err,data){        
         data.forEach(word => {
-        arr.push(word.Arabic)
-         console.log(word.Arabic)
+        arr.push(word.Arabic)       
         });
         console.log(arr)
         res.send(arr)
         next();   
         
-    }).limit(1000)
-        
+    })        
+   }else{
+       console.log(q[1])
+    reg1= new RegExp("^" + "ا"+q[1]+".*")
+    reg2= new RegExp("^" + "أ"+q[1]+".*" )
+
+    search.find ({"$or":[{Arabic:reg1},{Arabic:reg2}]
+},{ _id:0,
+    __v:0
+},function(err,data){        
+    data.forEach(word => {
+    arr.push(word.Arabic)       
+    });
+    console.log(arr)
+    res.send(arr)
+    next();   
+    
+})
    }
+}
    else{
 
     var reg=new RegExp("^"+q+".*", 'i')
@@ -74,23 +93,7 @@ if(result){
         res.send(arr)
     next();  
     }
-    )
-
-    
-//     search.find({
-//         //English:{"$regex":q,"$options":"i"}
-//  },{
-//      _id:0,
-//      __v:0
- //},
-//  function(err,data){    
-//     data.forEach(word => {               
-//         arr.push(word.English)
-//     });
-//     console.log(arr)
-//     res.send(arr)
-//     next();    
-//  }).limit(100)  
+    ) 
 
 }
  

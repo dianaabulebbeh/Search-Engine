@@ -9,10 +9,14 @@ function testAjax(data) {
         data: {data},  
         contentType: 'text/json',
       success:function(data) {
-         
-          $( "#myInput" ).autocomplete({
-            source: data
-        });
+        var html = '';
+        for (var i = 0; i< data.length; i++) {
+            html += '<h2>' + data[i]   +'</h2>';
+        }
+        $('#target').html(html);
+        
+          
+       
        
       }
     });
