@@ -24,33 +24,28 @@ if(result){
    
    if(search1.test(q)|| search2.test(q)){
     if(q.length==1){
-       console.log("arabic char A ///////////// "+q)         
+       //console.log("arabic char A ///////////// "+q)         
         search.find ({"$or":[{Arabic:search1},{Arabic:search2}]
     },{ _id:0,
         __v:0
-    },function(err,data){        
-        data.forEach(word => {
-        arr.push(word.Arabic)       
-        });
-        console.log(arr)
-        res.send(arr)
+    },function(err,data){           
+        res.send(data)
         next();   
         
     })        
    }else{
-       console.log(q[1])
-    reg1= new RegExp("^" + "ا"+q[1]+".*")
-    reg2= new RegExp("^" + "أ"+q[1]+".*" )
+       
+       var o=q.substring(1);
+        
+     
+    reg1= new RegExp("^" + "ا"+o+".*")
+    reg2= new RegExp("^" + "أ"+o+".*" )
 
     search.find ({"$or":[{Arabic:reg1},{Arabic:reg2}]
 },{ _id:0,
     __v:0
 },function(err,data){        
-    data.forEach(word => {
-    arr.push(word.Arabic)       
-    });
-    console.log(arr)
-    res.send(arr)
+    res.send(data)
     next();   
     
 })
@@ -65,12 +60,7 @@ if(result){
     _id:0,
     __v:0
 },function(err,data){
-    data.forEach(word => {
-        arr.push(word.Arabic)
-        
-    });
-    console.log(arr)
-    res.send(arr)
+    res.send(data)
     next();   
     
 })
@@ -82,15 +72,14 @@ if(result){
    search.find({
     English:reg
       
-    },{
+    }
+    
+    ,{
         _id:0,
          __v:0
     },function(err,data){
         if(err) throw err;
-        data.forEach(word => {               
-            arr.push(word.English)
-        });
-        res.send(arr)
+        res.send(data)
     next();  
     }
     ) 

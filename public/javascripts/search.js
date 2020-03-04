@@ -11,7 +11,7 @@ function testAjax(data) {
       success:function(data) {
         var html = '';
         for (var i = 0; i< data.length; i++) {
-            html += '<h2>' + data[i]   +'</h2>';
+            html += '<h2>' + (data[i].English) +'-'+(data[i].Arabic)+'</h2>';
         }
         $('#target').html(html);
         
